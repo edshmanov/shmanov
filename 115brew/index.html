@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>115 Brew | Coffee Truck in Adams County, Indiana</title>
+<meta name="description" content="115 Brew is a coffee truck run by two sisters in Adams County, Indiana. See where the truck is today, get a text when we park near you, and book us for your event.">
+<meta name="theme-color" content="#1C1917">
+<!-- Preview: stays hidden from Google until the owners say go -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="img/logo.jpg">
+<link rel="apple-touch-icon" href="img/logo.jpg">
+<meta property="og:title" content="115 Brew | Coffee truck in Adams County, Indiana">
+<meta property="og:description" content="Where's the truck today? See our next stop, get a text when we park near you, and book us for your event.">
+<meta property="og:image" content="img/hero-truck.jpg">
+<link rel="stylesheet" href="fonts.css">
+<script src="config.js"></script>
+<style>
+  /* The page answers one question first (where is the truck today?) on a ticket shaped like their weekly schedule card, then alerts, menu, events. */
+  :root{
+    --panel:#EDEBE7;
+    --card:#FBF8F2;
+    --white:#FFFFFF;
+    --ink:#1C1917;
+    --muted:#6E655D;
+    --line:#DAD4CB;
+    --latte:#9C714B;
+    --bulb:#F2B04A;
+    --ok:#2F7D4F;
+    --radius:14px;
+    --gutter:16px;
+    --display:"Antonio","Arial Narrow",sans-serif;
+    --text:"Figtree",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--panel);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--bulb);outline-offset:2px;border-radius:6px}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 var(--gutter)}
+  h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;line-height:1;text-wrap:balance}
+  h2{font-size:clamp(40px,10vw,64px);text-transform:uppercase;letter-spacing:.01em}
+  h3{font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+  p{margin:0}
+  .lede{color:var(--muted);max-width:56ch}
+  section{padding:64px 0}
+  section[id]{scroll-margin-top:62px}
+  .head{display:grid;gap:10px;margin-bottom:26px}
+  .rivets{height:8px;background:radial-gradient(circle at 6px 4px,#fff 0 1.4px,#C9C3BA 2px 3px,transparent 3.5px) repeat-x;background-size:24px 8px;opacity:.9}
+
+  .preview{background:var(--ink);color:#B9B1A8;font-size:13px;text-align:center;padding:7px var(--gutter);line-height:1.35}
+  .preview strong{color:#fff;font-weight:600}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 22px;border-radius:999px;border:0;font:600 16px/1 var(--text);text-decoration:none;cursor:pointer;white-space:nowrap}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark:hover{background:#34302C}
+  .btn-dark[disabled]{opacity:.6;cursor:wait}
+  .btn-line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+  .btn-line:hover{background:rgba(28,25,23,.06)}
+  .btn-sm{min-height:40px;padding:9px 16px;font-size:15px}
+
+  header.top{position:sticky;top:0;z-index:20;background:rgba(237,235,231,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+  .brand img{width:42px;height:42px;border-radius:50%;flex:none}
+  .brand-text{display:flex;flex-direction:column;line-height:1.05;min-width:0}
+  .brand-text b{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:.02em}
+  .brand-text span{font-size:13px;color:var(--muted);white-space:nowrap}
+  nav.links{display:none;gap:24px;font-size:15px;font-weight:500}
+  nav.links a{text-decoration:none;color:var(--muted)}
+  nav.links a:hover{color:var(--ink)}
+
+  .hero{position:relative;padding-top:30px}
+  .hero h1{padding:0 var(--gutter);margin-bottom:20px;color:var(--ink);font-weight:300;font-size:clamp(54px,15vw,104px);text-transform:uppercase;letter-spacing:.01em}
+  .hero-photo{position:relative;aspect-ratio:1320/640;width:100%;overflow:hidden;background:var(--line)}
+  .hero-photo img{width:100%;height:100%;object-fit:cover}
+
+  .ticket{position:relative;z-index:3;margin:16px var(--gutter) 0;background:var(--card);padding:26px 22px 22px;
+    -webkit-mask:radial-gradient(circle at 0 0,transparent 16px,#000 16.5px) top left/51% 51% no-repeat,radial-gradient(circle at 100% 0,transparent 16px,#000 16.5px) top right/51% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 16px,#000 16.5px) bottom left/51% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 16px,#000 16.5px) bottom right/51% 51% no-repeat;
+            mask:radial-gradient(circle at 0 0,transparent 16px,#000 16.5px) top left/51% 51% no-repeat,radial-gradient(circle at 100% 0,transparent 16px,#000 16.5px) top right/51% 51% no-repeat,radial-gradient(circle at 0 100%,transparent 16px,#000 16.5px) bottom left/51% 51% no-repeat,radial-gradient(circle at 100% 100%,transparent 16px,#000 16.5px) bottom right/51% 51% no-repeat;
+    filter:drop-shadow(0 12px 30px rgba(28,25,23,.18))}
+  .ticket::before{content:"";position:absolute;inset:9px;border:1px solid rgba(28,25,23,.28);border-radius:10px;pointer-events:none}
+  .t-status{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--muted)}
+  .t-status i{width:10px;height:10px;border-radius:50%;background:var(--bulb);box-shadow:0 0 0 4px rgba(242,176,74,.25)}
+  .t-status.open{color:var(--ok)}
+  .t-status.open i{background:var(--ok);box-shadow:0 0 0 4px rgba(47,125,79,.18)}
+  .t-day{font-family:var(--display);font-size:clamp(44px,12vw,64px);line-height:1;margin-top:8px;text-transform:uppercase;letter-spacing:.01em}
+  .t-place{font-size:22px;font-weight:600;margin-top:10px;line-height:1.2}
+  .t-meta{color:var(--muted);margin-top:4px}
+  .t-time{font-family:var(--display);font-size:28px;margin-top:10px;letter-spacing:.02em}
+  .t-note{margin-top:10px;font-weight:600;color:var(--latte)}
+  .t-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .loading .t-day,.loading .t-place,.loading .t-time{color:transparent;background:linear-gradient(90deg,#ECE6DC,#F5F0E8,#ECE6DC);background-size:200% 100%;border-radius:8px;animation:shine 1.2s infinite linear;width:70%}
+  @keyframes shine{to{background-position:-200% 0}}
+
+  .alerts .wrap{display:grid;gap:30px}
+  .alert-form{display:grid;gap:10px;margin-top:22px;max-width:480px}
+  .alert-form label.l{font-size:14px;font-weight:600;color:var(--muted)}
+  .row{display:flex;gap:8px}
+  .row input{flex:1;min-width:0}
+  input,select,textarea{font:500 17px var(--text);color:var(--ink);background:var(--white);border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;min-height:50px;width:100%}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink)}
+  input[aria-invalid="true"]{border-color:#C2493A}
+  .consent{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start;font-size:13.5px;line-height:1.45;color:var(--muted);cursor:pointer}
+  .consent input{width:22px;height:22px;min-height:0;margin:1px 0 0;padding:0;accent-color:var(--ink)}
+  .consent a{color:var(--ink);font-weight:600}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .fine{font-size:14px;color:var(--muted)}
+  .msg{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px}
+  .msg b{display:block}
+  .msg.good{border-color:#B9D9C3;background:#EEF7F0}
+  .msg.bad{border-color:#E7C2BC;background:#FBEFED}
+  .phone{justify-self:center;width:min(340px,100%);border-radius:36px;padding:16px 14px 22px;background:linear-gradient(160deg,#2C2742,#4B3A55 55%,#9B5A5E);box-shadow:0 20px 40px rgba(28,25,23,.25)}
+  .phone .clock{color:#fff;text-align:center;font-family:var(--display);font-size:56px;font-weight:300;line-height:1;margin:18px 0 4px}
+  .phone .pdate{color:rgba(255,255,255,.8);text-align:center;font-size:14px;margin-bottom:22px}
+  .note{display:grid;grid-template-columns:38px 1fr;gap:10px;background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:18px;padding:12px;margin-top:8px}
+  .note img{width:38px;height:38px;border-radius:50%}
+  .note .top{display:flex;justify-content:space-between;font-size:14px}
+  .note .top b{font-weight:700}
+  .note .top span{color:var(--muted)}
+  .note p{font-size:14px;line-height:1.35;margin-top:2px}
+
+  .stops{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--ink)}
+  .stop{display:grid;grid-template-columns:78px 1fr;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+  .date{text-align:center;border:1.5px solid var(--ink);border-radius:12px;padding:8px 0 6px;background:var(--card)}
+  .date span{display:block;font-size:13px;font-weight:600;color:var(--muted)}
+  .date b{display:block;font-family:var(--display);font-weight:400;font-size:30px;line-height:1}
+  .stop h3{font-family:var(--text);text-transform:none;letter-spacing:0;font-size:19px;font-weight:600;line-height:1.25}
+  .stop p{color:var(--muted);font-size:15px}
+  .stop .sp{color:var(--latte);font-weight:600}
+  .stop a{font-size:15px;font-weight:600}
+  .stop.past{opacity:.5}
+  .stop .tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--ok);border-radius:999px;padding:2px 9px;margin-left:6px;vertical-align:2px}
+  .stop .tag.next{background:var(--latte)}
+  .empty{padding:22px 0;border-bottom:1px solid var(--line);color:var(--muted)}
+
+  .menu-wrap{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .drinks{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gutter)*-1) 28px;padding:0 var(--gutter);scrollbar-width:none}
+  .drinks::-webkit-scrollbar{display:none}
+  .drinks figure{margin:0;flex:0 0 62%;aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden;scroll-snap-align:start;background:var(--panel)}
+  .drinks img{width:100%;height:100%;object-fit:cover}
+  .favs{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1.5px solid var(--ink)}
+  .favs li{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .favs b{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:.02em;text-transform:uppercase}
+  .favs em{font-style:normal;font-family:var(--display);font-size:22px}
+  .favs p{grid-column:1/-1;color:var(--muted);font-size:15px}
+  .cols{display:grid;gap:28px;margin-top:34px}
+  .price-list{list-style:none;margin:10px 0 0;padding:0}
+  .price-list li{display:flex;align-items:baseline;gap:8px;padding:6px 0;font-size:16px}
+  .price-list li::after{content:"";order:2;flex:1;border-bottom:1.5px dotted #C9C1B6;transform:translateY(-4px)}
+  .price-list li span{order:3;font-variant-numeric:tabular-nums;font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chips span{font-size:14px;background:var(--panel);border-radius:999px;padding:4px 11px}
+  .menu-note{margin-top:22px;font-size:14px;color:var(--muted)}
+
+  .event-photos{display:grid;grid-template-columns:1.3fr 1fr;grid-template-rows:150px 150px;gap:8px;margin-bottom:28px}
+  .event-photos figure{margin:0;border-radius:var(--radius);overflow:hidden;background:var(--line)}
+  .event-photos figure:first-child{grid-row:span 2}
+  .event-photos img{width:100%;height:100%;object-fit:cover}
+  .served{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+  .served li{font-size:15px;font-weight:600;border:1.5px solid var(--ink);border-radius:999px;padding:5px 12px}
+  form.book{display:grid;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-top:28px;position:relative}
+  form.book h3{font-size:30px}
+  form.book label{display:grid;gap:6px;font-size:14px;font-weight:600;color:var(--muted)}
+  textarea{min-height:90px;resize:vertical}
+  .err{color:#B23B2C;font-size:14px;font-weight:600}
+
+  .about{background:var(--ink);color:#F2EEE8}
+  .about .wrap{display:grid;gap:28px}
+  .about figure{margin:0;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/4.4}
+  .about figure img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+  .about .lede{color:#C9C1B8}
+  .about p+p{margin-top:12px}
+  .about .sig{margin-top:18px;font-family:var(--display);font-size:26px;letter-spacing:.03em;text-transform:uppercase;color:#fff}
+
+  .strip{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gutter)*-1);padding:0 var(--gutter);scrollbar-width:none}
+  .strip::-webkit-scrollbar{display:none}
+  .strip figure{margin:0;flex:0 0 70%;aspect-ratio:1;border-radius:var(--radius);overflow:hidden;scroll-snap-align:start;background:var(--line)}
+  .strip img{width:100%;height:100%;object-fit:cover}
+
+  footer{background:var(--ink);color:#B9B1A8;padding:36px 0 calc(110px + env(safe-area-inset-bottom));font-size:15px;border-top:1px solid #34302C}
+  footer .wrap{display:grid;gap:10px}
+  footer .fb{display:flex;align-items:center;gap:12px}
+  footer .fb img{width:48px;height:48px;border-radius:50%}
+  footer b{font-family:var(--display);font-weight:600;font-size:26px;color:#fff;letter-spacing:.02em}
+  footer a{color:#fff}
+  footer .small{font-size:13px;margin-top:10px}
+  footer .small a{color:#B9B1A8}
+
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom));background:rgba(237,235,231,.97);border-top:1px solid var(--line)}
+  .bar .btn{width:100%}
+
+  @media (min-width:600px){
+    .drinks figure{flex-basis:38%}
+    .strip figure{flex-basis:40%}
+    .cols{grid-template-columns:repeat(2,1fr)}
+    .event-photos{grid-template-rows:200px 200px}
+  }
+  @media (min-width:900px){
+    .bar{display:none}
+    footer{padding-bottom:44px}
+    nav.links{display:flex}
+    section{padding:90px 0}
+    .hero{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:36px 56px;max-width:1100px;margin:0 auto;padding:56px var(--gutter) 72px}
+    .hero h1{grid-column:1;grid-row:1;padding:0;margin:0 0 6px;font-size:104px}
+    .ticket{grid-column:2;grid-row:1;margin:0}
+    .hero-photo{grid-column:1/-1;grid-row:2;border-radius:22px}
+    .alerts .wrap{grid-template-columns:1.1fr .9fr;align-items:center;gap:56px}
+    .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+    .drinks{display:grid;grid-template-columns:repeat(3,1fr);margin:0;padding:0;overflow:visible;gap:10px}
+    .drinks figure{flex:none}
+    .ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+    .event-photos{grid-template-rows:210px 210px;margin-bottom:0}
+    form.book{grid-template-columns:1fr 1fr;padding:28px}
+    form.book .full{grid-column:1/-1}
+    .about .wrap{grid-template-columns:.9fr 1.1fr;align-items:center;gap:56px}
+    .strip{display:grid;grid-template-columns:repeat(4,1fr);overflow:visible;margin:0;padding:0}
+    .strip figure{flex:none}
+    .sched-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+  }
+</style>
+</head>
+<body>
+
+<div class="preview"><strong>Preview for Jozie and Jalyne.</strong> Everything works. The site goes public when you say so.</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="115 Brew home">
+      <img src="img/logo.jpg" alt="" width="42" height="42">
+      <span class="brand-text"><b>115 BREW</b><span>Coffee truck, Adams County IN</span></span>
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="#schedule">Coming up</a>
+      <a href="#menu">Menu</a>
+      <a href="#events">Book the truck</a>
+      <a href="#about">About</a>
+    </nav>
+    <a class="btn btn-dark btn-sm" href="#alerts">Get alerts</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="hero">
+    <h1>Where's the truck today?</h1>
+    <div class="hero-photo"><img src="img/hero-truck.jpg" alt="The 115 Brew coffee truck with the menu board and serving window" width="1320" height="640"></div>
+    <div class="ticket loading" id="today" aria-live="polite">
+      <div class="t-status" id="tStatus"><i></i><span>Checking the schedule</span></div>
+      <div class="t-day" id="tDay">Friday</div>
+      <div class="t-place" id="tPlace">Loading</div>
+      <div class="t-meta" id="tMeta"></div>
+      <div class="t-time" id="tTime">7 AM</div>
+      <div class="t-note" id="tNote" hidden></div>
+      <div class="t-actions">
+        <a class="btn btn-dark" id="tDir" href="https://www.instagram.com/115brew" target="_blank" rel="noopener">Directions</a>
+        <a class="btn btn-line" href="#alerts">Text me stops</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="alerts" id="alerts">
+    <div class="wrap">
+      <div>
+        <div class="head">
+          <h2>Never miss the truck</h2>
+          <p class="lede">We move around Adams County every week. Get a text when we park near you, with the spot, the hours and the drink special.</p>
+        </div>
+        <form class="alert-form" id="alertForm" novalidate>
+          <label class="l" for="aPhone">Your mobile number</label>
+          <div class="row">
+            <input id="aPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(260) 555-0123">
+            <button class="btn btn-dark" type="submit" id="aBtn">Text me</button>
+          </div>
+          <label class="consent"><input type="checkbox" id="aConsent"><span id="aConsentText">Yes, text me 115 Brew truck stops and specials. About 2 to 3 recurring automated texts a week. Consent is not a condition of purchase. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help. <a href="sms-terms.html">SMS terms</a> &amp; <a href="privacy.html">Privacy</a>.</span></label>
+          <div class="hp" aria-hidden="true"><input tabindex="-1" autocomplete="off" id="aWeb"></div>
+          <p class="err" id="aErr" role="alert" hidden></p>
+          <div class="msg good" id="aDone" role="status" hidden><b>You're on the list!</b>Watch for a text next time we park near you.</div>
+        </form>
+      </div>
+      <div class="phone" aria-label="Example text alert on a phone lock screen">
+        <div class="clock">6:45</div>
+        <div class="pdate">Friday morning</div>
+        <div class="note">
+          <img src="img/logo.jpg" alt="">
+          <div><div class="top"><b>115 Brew</b><span>now</span></div>
+          <p>Morning! Find us at Marshal's Motors in Monroe today, 7 to 11 AM. Fall drinks are on the menu!</p></div>
+        </div>
+        <div class="note">
+          <img src="img/logo.jpg" alt="">
+          <div><div class="top"><b>115 Brew</b><span>Tue</span></div>
+          <p>We're at Adams Memorial Hospital today, 7:30 to 11 AM. See you there!</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rivets" aria-hidden="true"></div>
+
+  <section id="schedule">
+    <div class="wrap sched-grid">
+      <div class="head">
+        <h2>Coming up</h2>
+        <p class="lede">New stops every week. Follow along here, or get them by text.</p>
+      </div>
+      <div>
+        <ol class="stops" id="stops"><li class="empty">Loading the schedule&hellip;</li></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu-wrap" id="menu">
+    <div class="wrap">
+      <div class="head">
+        <h2>Menu</h2>
+        <p class="lede">Every latte comes hot or iced. Not a coffee person? Try the lemonade, chai or a Lotus energy drink.</p>
+      </div>
+      <div class="drinks">
+        <figure><img src="img/iced-latte.jpg" alt="Iced latte on the truck counter" loading="lazy"></figure>
+        <figure><img src="img/latte-birthday.jpg" alt="Birthday special latte with a gold candle" loading="lazy"></figure>
+        <figure><img src="img/lemonade.jpg" alt="Pink lotus lemonade inside the truck" loading="lazy"></figure>
+      </div>
+      <div class="menu-grid">
+        <div>
+          <h3 style="margin:30px 0 12px">Our favorites</h3>
+          <ul class="favs">
+            <li><b>Honey Bun</b><em>5.50</em><p>Honey, white mocha, cinnamon, brown sugar cold foam</p></li>
+            <li><b>Campfire</b><em>5.50</em><p>Mocha, toasted marshmallow, vanilla cold foam, graham cracker dust</p></li>
+            <li><b>Salted Sap</b><em>5.50</em><p>Maple syrup, vanilla, salted vanilla cold foam</p></li>
+            <li><b>Nutty Caramel</b><em>5.50</em><p>Hazelnut and caramel</p></li>
+            <li><b>Hazy Mallow</b><em>5.50</em><p>Hazelnut and toasted marshmallow</p></li>
+          </ul>
+        </div>
+        <div>
+          <div class="cols">
+            <div>
+              <h3>Coffee</h3>
+              <ul class="price-list">
+                <li>Latte<span>4.50</span></li>
+                <li>Americano<span>4.50</span></li>
+                <li>Mocha<span>5.00</span></li>
+                <li>Shaken espresso<span>5.00</span></li>
+                <li>Iced coffee<span>3.50</span></li>
+                <li>Drip coffee<span>3.50</span></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Non-coffee</h3>
+              <ul class="price-list">
+                <li>Chai<span>4.50</span></li>
+                <li>Hot chocolate<span>3.50</span></li>
+                <li>Lemonade<span>3.00</span></li>
+                <li>Iced tea<span>3.00</span></li>
+              </ul>
+            </div>
+          </div>
+          <div style="margin-top:28px">
+            <h3>Flavors</h3>
+            <div class="chips"><span>Vanilla</span><span>Caramel</span><span>Salted caramel</span><span>Hazelnut</span><span>Maple</span><span>Marshmallow</span><span>Raspberry</span><span>White mocha</span><span>Honey</span><span>Peach</span><span>Strawberry</span><span>Sugar-free vanilla</span><span>Sugar-free caramel</span></div>
+          </div>
+          <div style="margin-top:24px">
+            <h3>Milks and add-ins</h3>
+            <ul class="price-list">
+              <li>Oat milk<span>0.75</span></li>
+              <li>Cold foam<span>1.00</span></li>
+              <li>Extra shot<span>0.75</span></li>
+              <li>Extra sauce<span>0.50</span></li>
+              <li>Extra syrup<span>0.25</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="menu-note">Specials change with the season. Ask at the window what's new.</p>
+    </div>
+  </section>
+
+  <section id="events">
+    <div class="wrap ev-grid">
+      <div>
+        <div class="event-photos">
+          <figure><img src="img/line-girls-night.jpg" alt="Line at the truck during Girls Night at Steele Farms" loading="lazy"></figure>
+          <figure><img src="img/line-nursing.jpg" alt="Nursing students lined up at the truck before class" loading="lazy"></figure>
+          <figure><img src="img/line-night.jpg" alt="Evening line at the lit-up truck" loading="lazy"></figure>
+        </div>
+      </div>
+      <div>
+        <div class="head">
+          <h2>Book the truck</h2>
+          <p class="lede">Hospital staff mornings, school events, farm nights, markets, church events and parties. We bring the coffee, you bring the people.</p>
+        </div>
+        <ul class="served">
+          <li>Adams Memorial Hospital</li>
+          <li>Girls Night at Steele Farms</li>
+          <li>Motors &amp; Makers Market</li>
+          <li>Callithumpian Parade</li>
+        </ul>
+        <form class="book" id="bookForm" novalidate>
+          <h3 class="full">Ask about a date</h3>
+          <label>Your name<input id="bName" name="name" autocomplete="name"></label>
+          <label>Phone<input id="bPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel"></label>
+          <label>Email (optional)<input id="bEmail" name="email" type="email" inputmode="email" autocomplete="email"></label>
+          <label>Event date<input id="bDate" name="date" type="date"></label>
+          <label class="full">About how many people?<select id="bSize" name="size"><option>Under 50</option><option>50 to 150</option><option>150 to 300</option><option>300+</option></select></label>
+          <label class="full">Tell us about the event<textarea id="bNotes" name="notes" placeholder="Where, what time, what's the occasion"></textarea></label>
+          <div class="hp" aria-hidden="true"><input tabindex="-1" autocomplete="off" id="bWeb"></div>
+          <p class="err full" id="bErr" role="alert" hidden></p>
+          <button class="btn btn-dark full" type="submit" id="bBtn">Send request</button>
+          <div class="msg good full" id="bDone" role="status" hidden><b>Request sent!</b>We'll get back to you soon about your date.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <figure><img src="img/sisters.jpg" alt="Jozie and Jalyne with iced lattes in front of the truck" loading="lazy"></figure>
+      <div>
+        <div class="head"><h2>Two sisters, one coffee truck</h2></div>
+        <p class="lede">We're Jozie and Jalyne. We opened 115 Brew in September 2025 and take our truck all over Adams County: hospital parking lots, school mornings, farm nights, markets and parades.</p>
+        <p class="lede">Find the truck, grab a latte, and say hi at the window.</p>
+        <p class="sig">Jozie + Jalyne</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:56px;padding-bottom:56px">
+    <div class="wrap">
+      <div class="strip">
+        <figure><img src="img/window-lights.jpg" alt="Serving window with string lights" loading="lazy"></figure>
+        <figure><img src="img/bottles.jpg" alt="Bottled iced lattes with 115 Brew labels" loading="lazy"></figure>
+        <figure><img src="img/hero-sunrise.jpg" alt="The 115 Brew truck at sunrise" loading="lazy" style="object-position:30% 70%"></figure>
+        <figure><img src="img/crowd.jpg" alt="Crowd at the truck on opening weekend" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="fb"><img src="img/logo.jpg" alt=""><b>115 BREW</b></span>
+    <span>Coffee truck in Adams County, Indiana. Est. 2025.</span>
+    <span><a href="https://www.instagram.com/115brew" target="_blank" rel="noopener">Instagram @115brew</a> &nbsp;|&nbsp; <a href="https://www.facebook.com/share/18ZtMrEEqz/" target="_blank" rel="noopener">Facebook</a></span>
+    <span><a href="mailto:onefifteenbrew@gmail.com">onefifteenbrew@gmail.com</a> &nbsp;|&nbsp; <a href="tel:+12603014290">(260) 301-4290</a></span>
+    <span class="small"><a href="privacy.html">Privacy</a> &nbsp;|&nbsp; <a href="sms-terms.html">SMS terms</a> &nbsp;|&nbsp; <a href="admin/">Owner login</a> &nbsp;|&nbsp; Website by Ed Shmanov</span>
+  </div>
+</footer>
+
+<div class="bar">
+  <a class="btn btn-line" href="#today">Today's spot</a>
+  <a class="btn btn-dark" href="#alerts">Text me stops</a>
+</div>
+
+<script>
+(function(){
+  var API = window.BREW_API || '';
+  var TZ = 'America/Indiana/Indianapolis';
+  var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function nowHere(){ return new Date(new Date().toLocaleString('en-US',{timeZone:TZ})); }
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function at(date, hm){ var d=date.split('-').map(Number), t=hm.split(':').map(Number); return new Date(d[0],d[1]-1,d[2],t[0],t[1]); }
+  function clock(d){ var h=d.getHours(), m=d.getMinutes(); return (h%12||12)+(m?':'+pad(m):'')+' '+(h>=12?'PM':'AM'); }
+  function span(s,e){ return clock(s)+' – '+clock(e); }
+  function mapUrl(s){ return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(s.address || (s.place+(s.town?', '+s.town:'')+', Indiana')); }
+
+  // Usual weekly stops: only used if the schedule can't load
+  function usual(){
+    var now=nowHere(), out=[], pattern=[
+      {dow:2,start:'07:30',end:'11:00',place:'Adams Memorial Hospital',town:'Decatur'},
+      {dow:5,start:'07:00',end:'11:00',place:"Marshal's Motors",town:'Monroe'}];
+    for(var i=0;i<14&&out.length<3;i++){
+      var d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i), ymd=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+      pattern.forEach(function(p){ if(p.dow===d.getDay()&&out.length<3) out.push({date:ymd,start:p.start,end:p.end,place:p.place,town:p.town,address:'',note:'',usual:true}); });
+    }
+    return out;
+  }
+
+  function render(list){
+    var now=nowHere();
+    var ticket=document.getElementById('today'); ticket.classList.remove('loading');
+    var st=document.getElementById('tStatus'), label=st.querySelector('span');
+    var items=list.map(function(s){ s._s=at(s.date,s.start); s._e=at(s.date,s.end); return s; })
+                  .filter(function(s){ return s._e > now; });
+    var ol=document.getElementById('stops');
+    if(!items.length){
+      label.textContent='New stops coming soon';
+      document.getElementById('tDay').textContent='Stay tuned';
+      document.getElementById('tPlace').textContent='We post our stops here every week.';
+      document.getElementById('tMeta').textContent='Get a text the moment we do.';
+      document.getElementById('tTime').textContent='';
+      var dir=document.getElementById('tDir'); dir.textContent='Instagram'; dir.href='https://www.instagram.com/115brew';
+      ol.innerHTML='<li class="empty">No stops posted yet. Follow <a href="https://www.instagram.com/115brew" target="_blank" rel="noopener">@115brew</a> or get a text when we post.</li>';
+      return;
+    }
+    var pick=items[0], s=pick._s, e=pick._e, sameDay=s.toDateString()===now.toDateString();
+    ol.innerHTML=items.slice(0,6).map(function(x,i){
+      var tag='';
+      if(i===0){ tag = (now>=x._s&&now<x._e) ? '<span class="tag">Open now</span>' : sameDay ? '<span class="tag">Today</span>' : '<span class="tag next">Next</span>'; }
+      return '<li class="stop"><div class="date"><span>'+SHORT[x._s.getDay()]+'</span><b>'+(x._s.getMonth()+1)+'/'+x._s.getDate()+'</b></div>'+
+        '<div><h3>'+esc(x.place)+tag+'</h3><p>'+(x.town?esc(x.town)+', ':'')+span(x._s,x._e)+'</p>'+
+        (x.note?'<p class="sp">'+esc(x.note)+'</p>':'')+
+        '<a href="'+esc(mapUrl(x))+'" target="_blank" rel="noopener">Directions</a></div></li>';
+    }).join('');
+    if(now>=s&&now<e){ st.classList.add('open'); label.textContent='Open now until '+clock(e); }
+    else if(sameDay){ label.textContent='Today, opens at '+clock(s); }
+    else { label.textContent= pick.usual ? 'Usual next stop' : 'Next stop'; }
+    document.getElementById('tDay').textContent=(sameDay?'Today':DAYS[s.getDay()])+' '+(s.getMonth()+1)+'/'+s.getDate();
+    document.getElementById('tPlace').textContent=pick.place;
+    document.getElementById('tMeta').textContent=pick.town||'';
+    document.getElementById('tTime').textContent=span(s,e);
+    var note=document.getElementById('tNote'); note.hidden=!pick.note; note.textContent=pick.note||'';
+    var dir=document.getElementById('tDir'); dir.textContent='Directions'; dir.href=mapUrl(pick);
+  }
+
+  function load(){
+    if(!API){ render(usual()); return; }
+    var ctl=('AbortController' in window)?new AbortController():null, timer=setTimeout(function(){ if(ctl) ctl.abort(); },9000);
+    fetch(API+'?action=stops',{signal:ctl?ctl.signal:undefined}).then(function(r){return r.json();})
+      .then(function(d){ clearTimeout(timer); if(d&&d.ok) render(d.stops||[]); else render(usual()); })
+      .catch(function(){ clearTimeout(timer); render(usual()); });
+  }
+  load();
+  setInterval(load, 5*60*1000);
+
+  function send(body){
+    if(!API) return Promise.reject(new Error('not connected'));
+    return fetch(API,{method:'POST',body:JSON.stringify(body)}).then(function(r){return r.json();});
+  }
+  function digits(v){ var d=String(v||'').replace(/\D/g,''); if(d.length===11&&d[0]==='1') d=d.slice(1); return d; }
+  var CALL = ' Please call or text us at (260) 301-4290.';
+
+  // Text alerts sign-up
+  var aForm=document.getElementById('alertForm');
+  aForm.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var phone=document.getElementById('aPhone'), consent=document.getElementById('aConsent'), err=document.getElementById('aErr'), btn=document.getElementById('aBtn');
+    err.hidden=true;
+    if(digits(phone.value).length!==10){ phone.setAttribute('aria-invalid','true'); err.textContent='Enter your 10-digit mobile number.'; err.hidden=false; phone.focus(); return; }
+    phone.setAttribute('aria-invalid','false');
+    if(!consent.checked){ err.textContent='Check the box so we are allowed to text you.'; err.hidden=false; consent.focus(); return; }
+    btn.disabled=true; btn.textContent='Sending…';
+    send({action:'signup',phone:phone.value,consent:true,consentText:document.getElementById('aConsentText').textContent,page:location.href,website:document.getElementById('aWeb').value})
+      .then(function(d){
+        if(d&&d.ok){ aForm.querySelector('.row').hidden=true; aForm.querySelector('.consent').hidden=true; aForm.querySelector('label.l').hidden=true; document.getElementById('aDone').hidden=false; }
+        else { err.textContent=(d&&d.error==='phone')?'That number doesn’t look right. Use a 10-digit US mobile number.':'Something went wrong.'+CALL; err.hidden=false; }
+      })
+      .catch(function(){ err.textContent='Something went wrong.'+CALL; err.hidden=false; })
+      .then(function(){ btn.disabled=false; btn.textContent='Text me'; });
+  });
+
+  // Book the truck
+  var bForm=document.getElementById('bookForm');
+  bForm.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var name=document.getElementById('bName'), phone=document.getElementById('bPhone'), err=document.getElementById('bErr'), btn=document.getElementById('bBtn');
+    var bad=[]; if(!name.value.trim()) bad.push(name); if(digits(phone.value).length!==10) bad.push(phone);
+    [name,phone].forEach(function(i){ i.setAttribute('aria-invalid', bad.indexOf(i)>-1?'true':'false'); });
+    if(bad.length){ err.textContent='Add your name and a 10-digit phone number so we can get back to you.'; err.hidden=false; bad[0].focus(); return; }
+    err.hidden=true; btn.disabled=true; btn.textContent='Sending…';
+    send({action:'book',name:name.value,phone:phone.value,email:document.getElementById('bEmail').value,date:document.getElementById('bDate').value,
+          size:document.getElementById('bSize').value,notes:document.getElementById('bNotes').value,website:document.getElementById('bWeb').value})
+      .then(function(d){
+        if(d&&d.ok){ [].forEach.call(bForm.querySelectorAll('label,button,h3'),function(el){ el.hidden=true; }); document.getElementById('bDone').hidden=false; }
+        else { err.textContent='Something went wrong.'+CALL; err.hidden=false; }
+      })
+      .catch(function(){ err.textContent='Something went wrong.'+CALL; err.hidden=false; })
+      .then(function(){ btn.disabled=false; btn.textContent='Send request'; });
+  });
+})();
+</script>
+</body>
+</html>

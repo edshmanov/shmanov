@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>115 Brew | Owner page</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1C1917">
+<link rel="icon" href="../img/logo.jpg">
+<link rel="apple-touch-icon" href="../img/logo.jpg">
+<meta name="apple-mobile-web-app-title" content="115 Admin">
+<link rel="stylesheet" href="../fonts.css">
+<script src="../config.js"></script>
+<style>
+  :root{--panel:#EDEBE7;--card:#FBF8F2;--white:#fff;--ink:#1C1917;--muted:#6E655D;--line:#DAD4CB;--latte:#9C714B;--bulb:#F2B04A;--ok:#2F7D4F;--bad:#B23B2C;
+        --display:"Antonio","Arial Narrow",sans-serif;--text:"Figtree",system-ui,-apple-system,sans-serif}
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  body{margin:0;background:var(--panel);color:var(--ink);font:500 17px/1.45 var(--text);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--bulb);outline-offset:2px;border-radius:6px}
+  .wrap{max-width:560px;margin:0 auto;padding:0 16px}
+  header{position:sticky;top:0;z-index:10;background:rgba(28,25,23,.97);color:#fff}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;gap:10px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+  .brand img{width:36px;height:36px;border-radius:50%}
+  .brand b{font:600 20px/1 var(--display);letter-spacing:.03em}
+  .brand span{display:block;font-size:12px;color:#B9B1A8;margin-top:2px}
+  .hlinks{display:flex;gap:14px;font-size:14px;font-weight:600}
+  .hlinks a,.hlinks button{color:#E8E2DA;background:none;border:0;font:inherit;cursor:pointer;padding:6px 0;text-decoration:none}
+  h1,h2{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.01em;margin:0;line-height:1}
+  h1{font-size:44px;margin:26px 0 6px}
+  h2{font-size:28px;margin-bottom:14px}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+  label{display:grid;gap:6px;font-size:14px;font-weight:600;color:var(--muted)}
+  input,textarea{font:500 17px var(--text);color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;min-height:50px;width:100%}
+  input:focus,textarea:focus{outline:none;border-color:var(--ink)}
+  .grid{display:grid;gap:12px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:12px 20px;border-radius:999px;border:0;font:700 17px/1 var(--text);cursor:pointer;text-decoration:none;width:100%}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark[disabled]{opacity:.6}
+  .btn-line{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+  .places{display:flex;gap:8px;overflow-x:auto;margin:0 -18px 4px;padding:2px 18px 6px;scrollbar-width:none}
+  .places::-webkit-scrollbar{display:none}
+  .place{flex:none;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:9px 12px;font:600 15px/1.2 var(--text);cursor:pointer;color:var(--ink)}
+  .place small{display:block;font-weight:500;color:var(--muted);font-size:13px;margin-top:2px}
+  .place.on{border-color:var(--ink);background:var(--ink);color:#fff}
+  .place.on small{color:#CFC8BF}
+  .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:4px}
+  .seg button{border:0;background:none;border-radius:10px;min-height:42px;font:600 15px var(--text);color:var(--muted);cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .hint{font-size:13.5px;color:var(--muted);font-weight:500}
+  .toast{border-radius:12px;padding:12px 14px;font-size:15px;font-weight:600}
+  .toast.good{background:#EEF7F0;border:1px solid #B9D9C3;color:#1E5536}
+  .toast.bad{background:#FBEFED;border:1px solid #E7C2BC;color:var(--bad)}
+  .list{list-style:none;margin:0;padding:0}
+  .list li{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+  .list li:first-child{border-top:0}
+  .d{text-align:center;border:1.5px solid var(--ink);border-radius:10px;padding:5px 0 4px;background:#fff}
+  .d span{display:block;font-size:12px;font-weight:700;color:var(--muted)}
+  .d b{display:block;font:400 22px/1 var(--display)}
+  .list h3{margin:0;font-size:16.5px;font-weight:700;line-height:1.25}
+  .list p{margin:2px 0 0;font-size:14.5px;color:var(--muted)}
+  .list .sp{color:var(--latte);font-weight:600}
+  .del{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font:600 14px var(--text);color:var(--muted);cursor:pointer;min-height:40px}
+  .del.sure{border-color:var(--bad);background:var(--bad);color:#fff}
+  .empty{color:var(--muted);font-size:15px;padding:6px 0}
+  .big{font:400 64px/1 var(--display)}
+  .book{border-top:1px solid var(--line);padding:14px 0}
+  .book:first-child{border-top:0;padding-top:0}
+  .book h3{margin:0;font-size:17px}
+  .book p{margin:3px 0 0;font-size:15px;color:var(--muted)}
+  .book .acts{display:flex;gap:8px;margin-top:10px}
+  .book .acts a{flex:1;min-height:42px;font-size:15px}
+  .login{max-width:380px;margin:12vh auto 0;text-align:center}
+  .login img{width:84px;height:84px;border-radius:50%;margin:0 auto 14px;display:block}
+  .login input{text-align:center;font-size:26px;letter-spacing:.3em}
+  footer{color:var(--muted);font-size:13px;text-align:center;padding:24px 0 40px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../img/logo.jpg" alt=""><div><b>115 BREW</b><span>Owner page</span></div></a>
+    <div class="hlinks"><a href="../" target="_blank" rel="noopener">View site</a><button type="button" id="logout" hidden>Log out</button></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <form class="login" id="login" autocomplete="on">
+    <img src="../img/logo.jpg" alt="">
+    <h1 style="margin-top:0">Owner page</h1>
+    <p class="sub">Enter your PIN to post stops and see sign-ups and bookings.</p>
+    <input type="text" name="username" value="115brew" autocomplete="username" hidden>
+    <div class="grid">
+      <input id="pin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="PIN" aria-label="PIN">
+      <button class="btn btn-dark" type="submit" id="loginBtn">Open</button>
+      <div class="toast bad" id="loginErr" hidden></div>
+    </div>
+  </form>
+
+  <main id="app" hidden>
+    <h1>Hi Jozie &amp; Jalyne</h1>
+    <p class="sub">Post where the truck will be. It shows on the website right away.</p>
+
+    <form class="card grid" id="stopForm" novalidate>
+      <h2 style="margin:0">Post a stop</h2>
+      <div id="placesWrap" hidden>
+        <div class="hint" style="margin-bottom:8px">Your spots. Tap one to fill it in</div>
+        <div class="places" id="places"></div>
+      </div>
+      <label>Place<input id="sPlace" placeholder="Bellmont High School" autocomplete="off"></label>
+      <label>Town<input id="sTown" placeholder="Decatur" autocomplete="off"></label>
+      <label>Address <span class="hint">(optional, for the Directions button)</span><input id="sAddr" placeholder="123 Main St" autocomplete="off"></label>
+      <div>
+        <div class="hint" style="margin-bottom:6px;font-weight:600">Day</div>
+        <div class="seg" id="daySeg">
+          <button type="button" data-d="0" aria-pressed="true">Today</button>
+          <button type="button" data-d="1" aria-pressed="false">Tomorrow</button>
+          <button type="button" data-d="pick" aria-pressed="false">Pick date</button>
+        </div>
+        <input id="sDate" type="date" style="margin-top:8px" hidden>
+      </div>
+      <div class="two">
+        <label>Opens<input id="sStart" type="time" value="07:00"></label>
+        <label>Closes<input id="sEnd" type="time" value="11:00"></label>
+      </div>
+      <label>Special or note <span class="hint">(optional)</span><input id="sNote" placeholder="Pumpkin cold foam is back!" maxlength="200"></label>
+      <button class="btn btn-dark" type="submit" id="postBtn">Post stop</button>
+      <div class="toast" id="postMsg" hidden></div>
+    </form>
+
+    <section class="card">
+      <h2>Coming up</h2>
+      <ul class="list" id="upcoming"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Text alerts</h2>
+      <div class="big" id="signups">0</div>
+      <p class="sub" style="margin:4px 0 0" id="signupsLabel">people signed up for texts</p>
+      <p class="hint" style="margin-top:10px">Sending texts turns on after the phone carriers approve your number. Until then, sign-ups keep adding up here.</p>
+    </section>
+
+    <section class="card">
+      <h2>Booking requests</h2>
+      <div id="bookings"></div>
+      <p class="hint" style="margin-top:10px">Each new request is also emailed to you.</p>
+    </section>
+  </main>
+
+  <footer>115 Brew owner page &middot; Website by Ed Shmanov</footer>
+</div>
+
+<script>
+(function(){
+  var API = window.BREW_API || '';
+  var TZ = 'America/Indiana/Indianapolis';
+  var SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var pin = '';
+  var store = {
+    get: function(){ try { return localStorage.getItem('brew_pin') || ''; } catch(e){ return ''; } },
+    set: function(v){ try { if (v) localStorage.setItem('brew_pin', v); else localStorage.removeItem('brew_pin'); } catch(e){} }
+  };
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function todayYmd(offset){
+    var base = new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()).split('-').map(Number);
+    var d = new Date(base[0], base[1]-1, base[2] + (offset||0));
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  function clock(hm){ var p=hm.split(':').map(Number); return (p[0]%12||12)+(p[1]?':'+String(p[1]).padStart(2,'0'):'')+' '+(p[0]>=12?'PM':'AM'); }
+  function call(body){
+    if (!API) return Promise.reject(new Error('The website is not connected to the sheet yet.'));
+    body.pin = pin;
+    return fetch(API,{method:'POST',body:JSON.stringify(body)}).then(function(r){ return r.json(); });
+  }
+  function errText(d){
+    if (d && d.error==='pin') return 'Wrong PIN. Try again.';
+    if (d && d.error==='locked') return 'Too many tries. Wait 10 minutes and try again.';
+    if (d && d.error==='times') return 'Closing time has to be after opening time.';
+    if (d && d.error==='missing') return 'Add the place and the times.';
+    return 'Something went wrong. Check your connection and try again.';
+  }
+
+  // ---------- login ----------
+  function open(data){
+    $('login').hidden = true; $('app').hidden = false; $('logout').hidden = false;
+    show(data);
+  }
+  $('login').addEventListener('submit', function(e){
+    e.preventDefault();
+    pin = $('pin').value.trim();
+    if (!pin) return;
+    $('loginBtn').disabled = true; $('loginErr').hidden = true;
+    call({action:'adminData'}).then(function(d){
+      if (d && d.ok){ store.set(pin); open(d); }
+      else { $('loginErr').textContent = errText(d); $('loginErr').hidden = false; }
+    }).catch(function(err){ $('loginErr').textContent = err.message || errText(); $('loginErr').hidden = false; })
+      .then(function(){ $('loginBtn').disabled = false; });
+  });
+  $('logout').addEventListener('click', function(){ store.set(''); pin=''; location.reload(); });
+
+  // ---------- show data ----------
+  var places = [];
+  function show(d){
+    // upcoming stops
+    var ul = $('upcoming');
+    if (!d.stops.length) ul.innerHTML = '<li class="empty" style="display:block">Nothing posted yet. Add your next stop above.</li>';
+    else ul.innerHTML = d.stops.map(function(s){
+      var p = s.date.split('-').map(Number), dt = new Date(p[0], p[1]-1, p[2]);
+      return '<li><div class="d"><span>'+SHORT[dt.getDay()]+'</span><b>'+p[1]+'/'+p[2]+'</b></div>'+
+        '<div><h3>'+esc(s.place)+'</h3><p>'+(s.town?esc(s.town)+', ':'')+clock(s.start)+' – '+clock(s.end)+'</p>'+
+        (s.note?'<p class="sp">'+esc(s.note)+'</p>':'')+'</div>'+
+        '<button class="del" type="button" data-id="'+esc(s.id)+'">Delete</button></li>';
+    }).join('');
+
+    // your spots
+    places = d.places || [];
+    $('placesWrap').hidden = !places.length;
+    $('places').innerHTML = places.map(function(p, i){
+      return '<button type="button" class="place" data-i="'+i+'">'+esc(p.place)+'<small>'+esc(p.town)+(p.start?' · '+clock(p.start)+'–'+clock(p.end):'')+'</small></button>';
+    }).join('');
+
+    // sign-ups and bookings
+    $('signups').textContent = d.signupCount;
+    $('signupsLabel').textContent = d.signupCount === 1 ? 'person signed up for texts' : 'people signed up for texts';
+    var b = d.bookings || [];
+    $('bookings').innerHTML = !b.length ? '<p class="empty">No requests yet.</p>' : b.map(function(x){
+      var tel = String(x.phone).replace(/[^\d+]/g,'');
+      var when = x.date;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(when)) { var q = when.split('-').map(Number), dd = new Date(q[0], q[1]-1, q[2]); when = SHORT[dd.getDay()]+', '+dd.toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+      return '<div class="book"><h3>'+esc(x.name)+(when?' · '+esc(when):'')+'</h3>'+
+        '<p>'+esc(x.size)+(x.created?' · sent '+esc(x.created):'')+'</p>'+
+        (x.notes?'<p>'+esc(x.notes)+'</p>':'')+
+        '<div class="acts"><a class="btn btn-line" href="tel:'+esc(tel)+'">Call</a><a class="btn btn-line" href="sms:'+esc(tel)+'">Text</a>'+
+        (x.email?'<a class="btn btn-line" href="mailto:'+esc(x.email)+'">Email</a>':'')+'</div></div>';
+    }).join('');
+  }
+
+  // tap a saved spot to fill the form
+  $('places').addEventListener('click', function(e){
+    var btn = e.target.closest('.place'); if (!btn) return;
+    var p = places[Number(btn.dataset.i)];
+    $('sPlace').value = p.place; $('sTown').value = p.town || ''; $('sAddr').value = p.address || '';
+    if (p.start) $('sStart').value = p.start;
+    if (p.end) $('sEnd').value = p.end;
+    [].forEach.call(document.querySelectorAll('.place'), function(b){ b.classList.toggle('on', b === btn); });
+  });
+
+  // day picker
+  var dayChoice = '0';
+  $('daySeg').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    dayChoice = b.dataset.d;
+    [].forEach.call(this.querySelectorAll('button'), function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    $('sDate').hidden = dayChoice !== 'pick';
+    if (dayChoice === 'pick'){ if (!$('sDate').value) $('sDate').value = todayYmd(2); $('sDate').min = todayYmd(0); }
+  });
+
+  // post a stop
+  $('stopForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var msg = $('postMsg'), btn = $('postBtn');
+    var date = dayChoice === 'pick' ? $('sDate').value : todayYmd(Number(dayChoice));
+    if (!$('sPlace').value.trim()){ msg.className='toast bad'; msg.textContent='Add the place name.'; msg.hidden=false; $('sPlace').focus(); return; }
+    btn.disabled = true; btn.textContent = 'Posting…'; msg.hidden = true;
+    call({action:'addStop', date:date, start:$('sStart').value, end:$('sEnd').value, place:$('sPlace').value, town:$('sTown').value, address:$('sAddr').value, note:$('sNote').value})
+      .then(function(d){
+        if (d && d.ok){
+          show(d);
+          msg.className='toast good'; msg.textContent='Posted! It’s on the website now.'; msg.hidden=false;
+          ['sPlace','sTown','sAddr','sNote'].forEach(function(id){ $(id).value=''; });
+          [].forEach.call(document.querySelectorAll('.place'), function(b){ b.classList.remove('on'); });
+        } else { msg.className='toast bad'; msg.textContent=errText(d); msg.hidden=false; }
+      })
+      .catch(function(){ msg.className='toast bad'; msg.textContent=errText(); msg.hidden=false; })
+      .then(function(){ btn.disabled=false; btn.textContent='Post stop'; });
+  });
+
+  // delete: tap once, then tap again to confirm
+  $('upcoming').addEventListener('click', function(e){
+    var b = e.target.closest('.del'); if (!b) return;
+    if (!b.classList.contains('sure')){ b.classList.add('sure'); b.textContent='Tap again'; setTimeout(function(){ b.classList.remove('sure'); b.textContent='Delete'; }, 4000); return; }
+    b.disabled = true; b.textContent = '…';
+    call({action:'deleteStop', id:b.dataset.id}).then(function(d){ if (d && d.ok) show(d); else { b.disabled=false; b.textContent='Delete'; } })
+      .catch(function(){ b.disabled=false; b.textContent='Delete'; });
+  });
+
+  // stay logged in on this phone
+  var saved = store.get();
+  if (saved){
+    pin = saved;
+    call({action:'adminData'}).then(function(d){ if (d && d.ok) open(d); else store.set(''); }).catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
