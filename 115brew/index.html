@@ -156,6 +156,24 @@
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
   .chips span{font-size:14px;background:var(--panel);border-radius:999px;padding:4px 11px}
   .menu-note{margin-top:22px;font-size:14px;color:var(--muted)}
+  .price-list li{flex-wrap:wrap}
+  .price-list li small{order:4;flex-basis:100%;font-size:13.5px;line-height:1.35;color:var(--muted);margin-top:1px}
+  small.hi{font-family:var(--text);font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;margin-left:6px;vertical-align:3px}
+  .season{position:relative;background:#FBF5EC;border:1px solid #E7DCCB;border-radius:var(--radius);padding:22px 20px 10px;margin:0 0 28px;overflow:hidden}
+  .season::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:repeating-linear-gradient(90deg,#8E2A2A 0 18px,#3F6B4A 18px 36px)}
+  .season-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .season-tag{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:#8E2A2A;border-radius:999px;padding:4px 10px}
+  .season-now{font-size:14px;font-weight:600;color:#3F6B4A}
+  .season-title{font-size:clamp(38px,10vw,56px);color:#8E2A2A;margin-top:10px;letter-spacing:.01em}
+  .season-cols{display:grid;gap:8px;margin-top:12px}
+  .season-sub{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#3F6B4A;padding-bottom:8px;border-bottom:1.5px solid #3F6B4A;margin-top:12px}
+  .season-list{list-style:none;margin:0;padding:0}
+  .season-list li{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:12px 0;border-bottom:1px solid #EADFCF}
+  .season-list li:last-child{border-bottom:0}
+  .season-list b{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:.02em;text-transform:uppercase;color:var(--ink)}
+  .season-list em{font-style:normal;font-family:var(--display);font-size:22px;color:#8E2A2A}
+  .season-list p{grid-column:1/-1;color:var(--muted);font-size:15px}
+  @media (min-width:900px){.season{padding:30px 34px 16px}.season-cols{grid-template-columns:1fr 1fr;gap:48px}}
 
   .event-photos{display:grid;grid-template-columns:1.3fr 1fr;grid-template-rows:150px 150px;gap:8px;margin-bottom:28px}
   .event-photos figure{margin:0;border-radius:var(--radius);overflow:hidden;background:var(--line)}
@@ -288,7 +306,7 @@
         <div class="note">
           <img src="img/logo.jpg" alt="">
           <div><div class="top"><b>115 Brew</b><span>now</span></div>
-          <p>Morning! Find us at Marshal's Motors in Monroe today, 7 to 11 AM. Fall drinks are on the menu!</p></div>
+          <p>Morning! Find us at Marshal's Motors in Monroe today, 7 to 11 AM. The holiday menu is here!</p></div>
         </div>
         <div class="note">
           <img src="img/logo.jpg" alt="">
@@ -317,8 +335,32 @@
     <div class="wrap">
       <div class="head">
         <h2>Menu</h2>
-        <p class="lede">Every latte comes hot or iced. Not a coffee person? Try the lemonade, chai or a Lotus energy drink.</p>
+        <p class="lede">Our favorites and coffee come hot or iced. Not a coffee person? Try matcha, chai, lemonade or a Lotus energy drink.</p>
       </div>
+
+      <!-- Seasonal menus: the block with the latest start date that has passed is shown. Add a new block for each season. -->
+      <div class="season" data-start="2026-11-01">
+        <div class="season-top"><span class="season-tag">Seasonal</span><span class="season-now">On the menu now</span></div>
+        <h3 class="season-title">Holiday menu</h3>
+        <div class="season-cols">
+          <div>
+            <div class="season-sub">Coffee options</div>
+            <ul class="season-list">
+              <li><b>Peppermint Bliss Latte</b><em>6.00</em><p>Peppermint, mocha or white mocha</p></li>
+              <li><b>Sugar Cookie Latte</b><em>6.00</em></li>
+              <li><b>Christmas Crumble</b><em>6.50</em><p>White mocha, brown sugar, toasted marshmallow</p></li>
+            </ul>
+          </div>
+          <div>
+            <div class="season-sub">Non-coffee options</div>
+            <ul class="season-list">
+              <li><b>Candy Cane CoCo</b><em>5.50</em><p>Peppermint hot chocolate</p></li>
+              <li><b>Gingerbread Chai</b><em>6.00</em><p>Brown sugar, cinnamon</p></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <div class="drinks">
         <figure><img src="img/iced-latte.jpg" alt="Iced latte on the truck counter" loading="lazy"></figure>
         <figure><img src="img/latte-birthday.jpg" alt="Birthday special latte with a gold candle" loading="lazy"></figure>
@@ -326,55 +368,55 @@
       </div>
       <div class="menu-grid">
         <div>
-          <h3 style="margin:30px 0 12px">Our favorites</h3>
+          <h3 style="margin:30px 0 12px">Our favorites <small class="hi">Hot or iced</small></h3>
           <ul class="favs">
-            <li><b>Honey Bun</b><em>5.50</em><p>Honey, white mocha, cinnamon, brown sugar cold foam</p></li>
-            <li><b>Campfire</b><em>5.50</em><p>Mocha, toasted marshmallow, vanilla cold foam, graham cracker dust</p></li>
-            <li><b>Salted Sap</b><em>5.50</em><p>Maple syrup, vanilla, salted vanilla cold foam</p></li>
-            <li><b>Nutty Caramel</b><em>5.50</em><p>Hazelnut and caramel</p></li>
-            <li><b>Hazy Mallow</b><em>5.50</em><p>Hazelnut and toasted marshmallow</p></li>
+            <li><b>Honeybun</b><em>6.00</em><p>Espresso, honey, white mocha, cinnamon, milk, vanilla cold foam</p></li>
+            <li><b>Campfire</b><em>6.00</em><p>Espresso, your choice of mocha or white mocha, toasted marshmallow, milk, vanilla cold foam</p></li>
+            <li><b>Salted Sap</b><em>6.00</em><p>Espresso, maple, salted caramel, milk, vanilla cold foam</p></li>
+            <li><b>Nutty Caramel</b><em>6.00</em><p>Espresso, hazelnut, caramel, milk</p></li>
+            <li><b>Vanilla Mocha</b><em>6.00</em><p>Espresso, white mocha, vanilla, milk</p></li>
           </ul>
         </div>
         <div>
           <div class="cols">
             <div>
-              <h3>Coffee</h3>
+              <h3>Coffee <small class="hi">Hot or iced</small></h3>
               <ul class="price-list">
-                <li>Latte<span>4.50</span></li>
-                <li>Americano<span>4.50</span></li>
-                <li>Mocha<span>5.00</span></li>
-                <li>Shaken espresso<span>5.00</span></li>
-                <li>Iced coffee<span>3.50</span></li>
-                <li>Drip coffee<span>3.50</span></li>
+                <li>Latte<span>5.50</span><small>Espresso and milk, add a flavor if you like</small></li>
+                <li>Americano<span>4.50</span><small>Smooth espresso with water, like classic coffee</small></li>
+                <li>Drip coffee<span>3.50</span><small>Classic brewed coffee</small></li>
+                <li>Mocha<span>5.50</span><small>Espresso, smooth mocha, milk</small></li>
+                <li>Shaken espresso<span>5.00</span><small>Iced only. Shaken with ice for a frothy texture, with a splash of milk</small></li>
               </ul>
             </div>
             <div>
               <h3>Non-coffee</h3>
               <ul class="price-list">
-                <li>Chai<span>4.50</span></li>
-                <li>Hot chocolate<span>3.50</span></li>
-                <li>Lemonade<span>3.00</span></li>
-                <li>Iced tea<span>3.00</span></li>
+                <li>Chai<span>5.25</span><small>Sweet milk-based tea with a touch of cinnamon</small></li>
+                <li>Matcha<span>5.00</span><small>Smooth green tea latte made with milk</small></li>
+                <li>Lotus Energy<span>6.00</span><small>Natural plant-based energy, fruity and smooth</small></li>
+                <li>Lemonade<span>4.00</span><small>Add a fruity flavor if you'd like</small></li>
+                <li>Iced tea<span>4.00</span><small>Unsweet, add a fruit flavor or sweetener</small></li>
+                <li>Hot chocolate<span>4.00</span></li>
               </ul>
             </div>
           </div>
           <div style="margin-top:28px">
             <h3>Flavors</h3>
-            <div class="chips"><span>Vanilla</span><span>Caramel</span><span>Salted caramel</span><span>Hazelnut</span><span>Maple</span><span>Marshmallow</span><span>Raspberry</span><span>White mocha</span><span>Honey</span><span>Peach</span><span>Strawberry</span><span>Sugar-free vanilla</span><span>Sugar-free caramel</span></div>
+            <div class="chips"><span>Caramel</span><span>Sugar-free caramel</span><span>Salted caramel</span><span>Vanilla</span><span>Sugar-free vanilla</span><span>Hazelnut</span><span>Toasted marshmallow</span><span>Mocha</span><span>White mocha</span><span>Strawberry</span><span>Peach</span><span>Raspberry</span></div>
           </div>
           <div style="margin-top:24px">
-            <h3>Milks and add-ins</h3>
+            <h3>Milk and add-ins</h3>
             <ul class="price-list">
-              <li>Oat milk<span>0.75</span></li>
-              <li>Cold foam<span>1.00</span></li>
-              <li>Extra shot<span>0.75</span></li>
-              <li>Extra sauce<span>0.50</span></li>
-              <li>Extra syrup<span>0.25</span></li>
+              <li>Cold foam<span>+1.00</span></li>
+              <li>Extra flavor<span>+0.75</span></li>
+              <li>Oat milk<span>+1.00</span></li>
+              <li>Whole milk<span>included</span></li>
             </ul>
           </div>
         </div>
       </div>
-      <p class="menu-note">Specials change with the season. Ask at the window what's new.</p>
+      <p class="menu-note">Seasonal drinks change with spring, summer, fall and the holidays. Ask at the window what's new.</p>
     </div>
   </section>
 
@@ -526,6 +568,14 @@
   }
   load();
   setInterval(load, 5*60*1000);
+
+  // Seasonal menu: show the one whose start date passed most recently
+  (function(){
+    var now=nowHere(), today=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
+    var blocks=[].slice.call(document.querySelectorAll('.season')), best=null;
+    blocks.forEach(function(b){ if(b.dataset.start<=today && (!best || b.dataset.start>best.dataset.start)) best=b; });
+    blocks.forEach(function(b){ b.hidden = b!==best; });
+  })();
 
   function send(body){
     if(!API) return Promise.reject(new Error('not connected'));
